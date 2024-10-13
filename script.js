@@ -179,6 +179,42 @@ checkboxDarkMode.addEventListener('click', () => {
 
 
 
+// var btnOpen = document.querySelector('.open-modal-btn')
+// var modal = document.querySelector('.modal')
+// var inconClose =document.querySelector('.modal__header i')
+// var btnClose =document.querySelector('.modal__footer button')
+// function toggleModal(){
+//     modal.classList.toggle('hide')
+// }
+// btnOpen.addEventListener('click',toggleModal)
+// btnClose.addEventListener('click',toggleModal)
+// inconClose.addEventListener('click',toggleModal)
+// modal.addEventListener('click',toggleModal)
+
+
+// Lấy các phần tử cần sử dụng
+document.querySelector('.open-modal-btn').addEventListener('click', function () {
+    document.querySelector('.my_modal').classList.remove('hidden');
+});
+
+// Đóng modal khi bấm vào nút Close hoặc icon X
+document.querySelectorAll('.close-modal').forEach(function (closeBtn) {
+    closeBtn.addEventListener('click', function () {
+        document.querySelector('.my_modal').classList.add('hidden');
+    });
+});
+
+// Đóng modal khi bấm vào overlay (bên ngoài modal__inner)
+document.querySelector('.my_modal').addEventListener('click', function (event) {
+    if (event.target === document.querySelector('.my_modal')) {
+        document.querySelector('.my_modal').classList.add('hidden');
+    }
+});
+
+
+
+
+
 
 // soft skill
 
