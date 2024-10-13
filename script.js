@@ -192,23 +192,29 @@ checkboxDarkMode.addEventListener('click', () => {
 // modal.addEventListener('click',toggleModal)
 
 
-// Lấy các phần tử cần sử dụng
-document.querySelector('.open-modal-btn').addEventListener('click', function () {
-    document.querySelector('.my_modal').classList.remove('hidden');
+// Mở modal cụ thể khi nhấn vào nút "Xem chi tiết"
+document.querySelectorAll('.open-modal-btn').forEach(function (button) {
+    button.addEventListener('click', function () {
+        const modalId = this.getAttribute('data-modal');
+        document.querySelector(`.my_modal[data-modal="${modalId}"]`).classList.remove('hidden');
+    });
 });
 
-// Đóng modal khi bấm vào nút Close hoặc icon X
+// Đóng modal cụ thể khi nhấn vào nút Close hoặc icon X
 document.querySelectorAll('.close-modal').forEach(function (closeBtn) {
     closeBtn.addEventListener('click', function () {
-        document.querySelector('.my_modal').classList.add('hidden');
+        const modal = this.closest('.my_modal');
+        modal.classList.add('hidden');
     });
 });
 
 // Đóng modal khi bấm vào overlay (bên ngoài modal__inner)
-document.querySelector('.my_modal').addEventListener('click', function (event) {
-    if (event.target === document.querySelector('.my_modal')) {
-        document.querySelector('.my_modal').classList.add('hidden');
-    }
+document.querySelectorAll('.my_modal').forEach(function (modal) {
+    modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
 });
 
 
