@@ -217,6 +217,31 @@ document.querySelectorAll('.my_modal').forEach(function (modal) {
     });
 });
 
+  let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider img');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    // Automatically change slides every 3 seconds
+    setInterval(nextSlide, 3000);
+
+    document.querySelector('.close-modal-btn').addEventListener('click', function() {
+        // Logic to close the modal
+        document.querySelector('.modal__inner').style.display = 'none';
+    });
+
+    // Initial display of first slide
+    showSlide(currentSlide);
+
 
 
 
