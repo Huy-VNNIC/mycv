@@ -1,3 +1,100 @@
+
+const handleProjectTabs = async () => {
+    const tabPanes = document.querySelectorAll(".tab-content  > .tab-pane");
+
+    // Ẩn tất cả các tab
+    tabPanes.forEach(tabPane => {
+        tabPane.setAttribute("hidden", "true");
+    });
+
+    // Hiển thị tab đầu tiên theo mặc định
+    tabPanes[0].removeAttribute("hidden");
+
+    const navItems = document.querySelectorAll(".project-nav > .nav-item");
+
+    // Lặp qua các mục điều hướng và thêm sự kiện click
+    navItems.forEach(navItem => {
+        navItem.addEventListener("click", function () {
+
+            // Ẩn tất cả các tab trước khi hiển thị tab được chọn
+            tabPanes.forEach(tabPane => {
+                tabPane.setAttribute("hidden", "true");
+            });
+
+            // Lấy giá trị data-project-pane từ mục điều hướng
+            const projectPaneId = navItem.getAttribute("data-project-pane");
+            const query = `.tab-pane[data-project-pane="${projectPaneId}"]`;
+
+            // Hiển thị tab được chọn
+            const targetPane = document.querySelector(query);
+            if (targetPane) targetPane.removeAttribute("hidden");
+        });
+    });
+}
+
+const handleModal = async () => {
+    const DEFAULT_INTERVAL = 1700;
+    // Biến để quản lý slide interval
+    let slideInterval;
+
+    // Thêm sự kiện click cho các nút mở modal
+    document.querySelectorAll('.open-modal-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const modalId = this.getAttribute('data-modal');
+            const modal = document.querySelector(`.my_modal[data-modal="${modalId}"]`);
+            modal.classList.remove('hidden'); // Hiển thị modal
+
+            // Bắt đầu slideshow khi modal được mở
+            const slides = modal.querySelectorAll('.slider img'); // Lấy tất cả slide trong modal
+            const totalSlides = slides.length;
+            let currentSlide = 0;
+
+            const showSlide = (index) => {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[index].classList.add('active');
+            };
+
+            const nextSlide = () => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            };
+
+            // Tự động chuyển đổi slide mỗi 1.7 giây
+            slideInterval = setInterval(nextSlide, DEFAULT_INTERVAL);
+
+            const closeModal = () => {
+                clearInterval(slideInterval); // Dừng slideshow khi đóng modal
+                modal.classList.add('hidden'); // Ẩn modal
+            };
+
+            // Thêm sự kiện click cho nút đóng modal (icon 'x' và nút 'Close')
+            const closeModalButtons = modal.querySelectorAll('.close-modal-btn');
+            closeModalButtons.forEach(closeBtn => {
+                closeBtn.addEventListener('click', closeModal);
+            });
+
+            // Đóng modal khi bấm vào overlay (bên ngoài modal__inner)
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    closeModal(); // Gọi hàm đóng modal
+                }
+            });
+
+            // Hiển thị slide đầu tiên
+            showSlide(currentSlide);
+        });
+    });
+};
+
+handleProjectTabs();
+handleModal();
+
+
+
+
+
+
+
 let menu = document.querySelector('#menu-bars');
 let header = document.querySelector('header');
 
@@ -193,55 +290,58 @@ checkboxDarkMode.addEventListener('click', () => {
 
 
 // Mở modal cụ thể khi nhấn vào nút "Xem chi tiết"
-document.querySelectorAll('.open-modal-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
-        const modalId = this.getAttribute('data-modal');
-        document.querySelector(`.my_modal[data-modal="${modalId}"]`).classList.remove('hidden');
-    });
-});
 
-// Đóng modal cụ thể khi nhấn vào nút Close hoặc icon X
-document.querySelectorAll('.close-modal').forEach(function (closeBtn) {
-    closeBtn.addEventListener('click', function () {
-        const modal = this.closest('.my_modal');
-        modal.classList.add('hidden');
-    });
-});
 
-// Đóng modal khi bấm vào overlay (bên ngoài modal__inner)
-document.querySelectorAll('.my_modal').forEach(function (modal) {
-    modal.addEventListener('click', function (event) {
-        if (event.target === modal) {
-            modal.classList.add('hidden');
-        }
-    });
-});
+// let currentSlide = 0;
+// const slides = document.querySelectorAll('.slider img');
+// const totalSlides = slides.length;
 
-  let currentSlide = 0;
-    const slides = document.querySelectorAll('.slider img');
-    const totalSlides = slides.length;
+// function showSlide(index) {
+//     slides.forEach(slide => slide.classList.remove('active'));
+//     slides[index].classList.add('active');
+// }
 
-    function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[index].classList.add('active');
-    }
+// function nextSlide() {
+//     currentSlide = (currentSlide + 1) % totalSlides;
+//     showSlide(currentSlide);
+// }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        showSlide(currentSlide);
-    }
+// // Automatically change slides every 3 seconds
+// setInterval(nextSlide, 3000);
 
-    // Automatically change slides every 3 seconds
-    setInterval(nextSlide, 3000);
+// document.querySelector('.close-modal-btn').addEventListener('click', function () {
+//     // Logic to close the modal
+//     document.querySelector('.modal__inner').style.display = 'none';
+// });
 
-    document.querySelector('.close-modal-btn').addEventListener('click', function() {
-        // Logic to close the modal
-        document.querySelector('.modal__inner').style.display = 'none';
-    });
+// // Initial display of first slide
+// showSlide(currentSlide);
 
-    // Initial display of first slide
-    showSlide(currentSlide);
 
+// const handleProjectTabs = async () => {
+//     const tabPanes = document.querySelectorAll(".tab-content  > .tab-pane");
+//     tabPanes.forEach(tabPane => {
+//         tabPane.setAttribute("hidden", "true");
+//     });
+//     // Show the first tab by default
+//     tabPanes[0].removeAttribute("hidden");
+
+//     const navItems = document.querySelectorAll(".project-nav > .nav-item");
+//     navItems.forEach(navItem => {
+//         navItem.addEventListener("click", function () {
+//             tabPanes.forEach(tabPane => {
+//                 tabPane.setAttribute("hidden", "true");
+//             });
+//             const projectPaneId = navItem.getAttribute("data-project-pane");
+//             const query = `.tab-pane[data-project-pane="${projectPaneId}"]`;
+//             const targetPane = document.querySelector(query);
+//             if (targetPane) targetPane.removeAttribute("hidden");
+//         });
+//     });
+// }
+
+
+// handleProjectTabs();
 
 
 
